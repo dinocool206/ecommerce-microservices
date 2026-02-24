@@ -1,5 +1,6 @@
 package com.example.inventory.integrationTest;
 
+import com.example.inventory.dto.InventoryResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,12 +28,24 @@ class InventoryIntegrationTest {
 
         String url = "http://localhost:" + port + "/inventory/1005";
 
-        ResponseEntity<String> response =
-                restTemplate.getForEntity(url, String.class);
+        ResponseEntity<InventoryResponse> response =
+                restTemplate.getForEntity(url, InventoryResponse.class);
 
-        logger.info("Response is {}",response);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).contains("Smartwatch");
+
+        InventoryResponse body = response.getBody();
+        logger.info("Response: {}",body);
+        assertThat(body).isNotNull();
+        assertThat(body.getProductId()).isEqualTo(1005L);
+        assertThat(body.getProductName()).isEqualTo("Smartwatch");
+
+        assertThat(body.getBatches()).isNotEmpty();
+
+        // Validate sorting
+        assertThat(body.getBatches().get(0).getExpiryDate())
+                .isBeforeOrEqualTo(
+                        body.getBatches().get(1).getExpiryDate()
+                );
     }
 
     @Test
