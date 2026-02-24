@@ -151,20 +151,22 @@ GET /inventory/1005
 **Response**
 
 ```json
-[
-  {
-    "batchId": 1,
-    "productId": 1005,
-    "quantity": 50,
-    "expiryDate": "2026-01-01"
-  },
-  {
-    "batchId": 2,
-    "productId": 1005,
-    "quantity": 30,
-    "expiryDate": "2026-03-01"
-  }
-]
+{
+  "productId": 1005,
+  "productName": "Smartwatch",
+  "batches": [
+    {
+      "batchId": 1,
+      "quantity": 50,
+      "expiryDate": "2026-01-01"
+    },
+    {
+      "batchId": 2,
+      "quantity": 30,
+      "expiryDate": "2026-03-01"
+    }
+  ]
+}
 ```
 
 ---
